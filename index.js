@@ -25,6 +25,17 @@ app.post('/usuarios', (req, res) => {
     if (!nome || !email) {
         return res.status(400).json({ erro: "Nome e email são obrigatórios" });
     }
+    
+    const novoUsuario = {
+        nome: nome,
+        email: email,
+        id: ultimoId + 1
+    };
+
+    usuarios.push(novoUsuario);
+    ultimoId += 1;
+
+    return res.status(201).json(novoUsuario);
 
     //definir o id dele
     //adicionar ele na lista/banco de dados
