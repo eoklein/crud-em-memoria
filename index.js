@@ -103,7 +103,7 @@ app.patch('/usuarios/:id', (req, res) => {
 });
 
 app.get ("/usuarios/:id", (req, res) => {
-    return usuarios.find((usuario) => usuario.id === parseInt(req.params.id));
+    return res.status(200).json(usuarios.find((usuario) => usuario.id === parseInt(req.params.id)));
 });    
 
 
