@@ -1,10 +1,13 @@
-let usuarios = []
-let ultimoId = 0
+import { PrismaClient} from "@prisma/client";
 
-function listarTodosUsuarios(req, res) {
-    console.log("Cheguei no controller");
+const prisma = new PrismaClient();
 
-    res.status(200).json(usuarios);
+let ultimoId = 0;
+
+async function listarTodosUsuarios(req, res) {
+    const usuarios_do_banco = await prisma.users.findMany();
+    console.log(usuarios_do_banco);
+    res.status(200).json(usuarios_do_banco);
 }
 
 function criarUsuario(req, res) {
@@ -97,10 +100,11 @@ function atualizarUsuario(req, res) {
     res.status(200).json(usuario);
 }
 
-function listarUsuarioId(req, res) {
-        return res
-    .status(200)
-    .json(usuarios.find((usuario) => usuario.id === parseInt(req.params.id)));
+async function listarUsuarioId(req, res) {
+
+    const id = parseInt(req.params.id);
+    const usuario = await prisma.users.findUnique({where: {id: id}});
+    res.status(200).json(usuario);
 }
 
 export {listarTodosUsuarios, criarUsuario, deletarUsuario, atualizarUsuario, listarUsuarioId};
