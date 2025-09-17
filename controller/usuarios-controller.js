@@ -10,30 +10,21 @@ async function listarTodosUsuarios(req, res) {
     res.status(200).json(usuarios_do_banco);
 }
 
-function criarUsuario(req, res) {
+async function criarUsuario(req, res) {
     const { nome, email, idade } = req.body;
-
-    if (!nome || !email) {
-    return res.status(400).json({ mensagem: "Nome e email são obrigatórios" });
-    } 
 
     const novoUsuario = {
     nome: nome,
     email: email,
     idade: idade,
-    id: ultimoId + 1,
     };
 
-    const existe = usuarios.find(u => novoUsuario.email === email)
+    const criarUser = await prisma.users.create({
+        data: novoUsuario
+    })
+        
 
-    if(existe) {
-        return res.status(400).json({ mensagem: "Este usuario ja existe!" });
-    }
-
-    usuarios.push(novoUsuario);
-    ultimoId += 1;
-
-    res.status(201).json(novoUsuario.id);
+    res.status(201).json(criarUser);
 }
 
 async function deletarUsuario(req, res) {
