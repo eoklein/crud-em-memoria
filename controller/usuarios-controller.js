@@ -6,6 +6,8 @@ let ultimoId = 0;
 
 async function listarTodosUsuarios(req, res) {
     
+    console.log(req.header)
+
     try {
     const usuarios_do_banco = await prisma.users.findMany();
     console.log(usuarios_do_banco);
@@ -17,6 +19,8 @@ async function listarTodosUsuarios(req, res) {
 }
 
 async function criarUsuario(req, res) {
+
+    try {
     const { nome, email, idade } = req.body;
 
     const novoUsuario = {
@@ -25,7 +29,6 @@ async function criarUsuario(req, res) {
     idade: idade,
     };
 
-    try {
     const criarUser = await prisma.users.create({
         data: novoUsuario
     })
